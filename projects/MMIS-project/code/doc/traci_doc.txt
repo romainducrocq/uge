@@ -1,0 +1,17 @@
+https://sumo.dlr.de/docs/
+https://sumo.dlr.de/docs/TraCI.html
+https://sumo.dlr.de/docs/TraCI/Interfacing_TraCI_from_Python.html
+https://sumo.dlr.de/docs/TraCI/Vehicle_Value_Retrieval.html
+https://sumo.dlr.de/docs/TraCI/Change_Vehicle_State.html
+https://sumo.dlr.de/docs/TraCI/Change_VehicleType_State.html
+https://sumo.dlr.de/docs/Tutorials/TraCI4Traffic_Lights.html
+https://sumo.dlr.de/docs/SUMO_edge_type_file.html
+https://sumo.dlr.de/docs/Simulation/VehicleSpeed.html
+https://sumo.dlr.de/docs/Networks/PlainXML.html#Lane-specific_Definitions
+
+https://sumo.dlr.de/pydoc/
+https://sumo.dlr.de/pydoc/traci.html
+https://sumo.dlr.de/pydoc/traci._vehicle.html
+https://sumo.dlr.de/pydoc/traci._simulation.html
+https://sumo.dlr.de/daily/pydoc/sumolib.net.html
+
