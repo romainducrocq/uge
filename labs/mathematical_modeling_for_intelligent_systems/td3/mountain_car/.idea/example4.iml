@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="PYTHON_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$" />
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="example3" />
+    <orderEntry type="module" module-name="example2" />
+    <orderEntry type="module" module-name="example1" />
+    <orderEntry type="module" module-name="Design_functions" />
+    <orderEntry type="module" module-name="Mountain Car" />
+    <orderEntry type="module" module-name="example1" />
+  </component>
+</module>

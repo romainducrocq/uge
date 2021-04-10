@@ -1,0 +1,5 @@
+https://sumo.dlr.de/docs/TraCI/Interfacing_TraCI_from_Python.html
+https://sumo.dlr.de/docs/Tutorials/TraCI4Traffic_Lights.html
+https://sumo.dlr.de/pydoc/traci.html
+https://github.com/eclipse/sumo/tree/master/tools/traci
+https://sumo.dlr.de/docs/TraCI.html

@@ -1,0 +1,305 @@
+---
+title: "Tp1: GOT"
+author: "DUCROCQ Romain"
+date: "**19/10/2020**"
+output:
+  unilur::tutorial_html_solution:
+    toc: true
+    toc_float: false
+    toc_depth: 1
+    suffix: ""
+    theme: journal
+    highlight: kate
+    number_sections: no
+    number_subsections: no
+---
+
+<!-- rmarkdown::render("/home/romain/Documents/upem/m2_sia/data_science_and_visualization/td1/got.Rmd") -->
+
+
+```{r knitr_init, echo=FALSE, cache=FALSE, include=FALSE}
+library(knitr)
+## Global options
+options(max.print="90")
+opts_chunk$set(echo=TRUE,
+               cache=FALSE, #TRUE
+               prompt=FALSE,
+               tidy=FALSE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE)
+opts_knit$set(width=90)
+options(width = 90)
+
+# no margins
+knit_hooks$set(nm = function(before, options, envir){
+  if (before){
+    par(mar=c(0,0,0,0))
+  }
+})
+
+# title margins
+knit_hooks$set(sm = function(before, options, envir){
+  if (before){
+    par(mar=c(0,0,1.2,0))
+  }
+})
+
+# boxes custom
+#devtools::install_github("koncina/unilur")
+knitr::opts_template$set(alert = list(box.title = "Watch out!",
+                                      box.body = list(fill = "#ffe0d9", colour = "black"),
+                                      box.header = list(fill = "#FFAD99", colour = "black"),
+                                      box.collapse = NULL,
+                                      box.icon = "fa-exclamation-triangle"))
+knitr::opts_template$set(solution = list(box.title = "Solution",
+                                         box.body = list(fill = "#e6f6e7", colour = "black"),
+                                         box.header = list(fill = "#ace1af", colour = "black"),
+                                         box.icon = "fa-check-square",
+                                         box.collapse = TRUE))
+knitr::opts_template$set(information = list(box.title = "Information",
+                                            box.body = list(fill = "#bbe8f4", colour = "black"),
+                                            box.header = list(fill = "#64c9e6", colour = "black"),
+                                            box.icon = "fa-info-circle",
+                                            box.collapse = NULL))
+knitr::opts_template$set(clues = list(box.title = "Indices",
+                                      box.body = list(fill = "#fff9dc", colour = "black"),
+                                      box.header = list(fill = "#ffec8b", colour = "black"),
+                                      box.icon = "fa-search",
+                                      box.collapse = TRUE))
+```
+
+</br>
+
+
+# Exercise 1 : load some data and look at their structures
+
+```{block, box.title = "1.1", box.body = list(fill = "white"), box.icon = "fa-star"}
+Import characters.csv, episodes.csv, scenes.csv and appearances.csv files from the data directory and store them in variables of the same name.
+```
+
+```{r, solution = TRUE}
+library(readr)
+library(dplyr)
+library(tidyr)
+library(tcltk)
+characters = read_csv("got/data/characters.csv")
+episodes = read_csv("got/data/episodes.csv")
+scenes = read_csv("got/data/scenes.csv")
+appearances = read_csv("got/data/appearances.csv")
+```
+
+```{block, box.title = "1.2", box.body = list(fill = "white"), box.icon = "fa-star"}
+Look at the size of the data.frame appearances, observe the variables common to the scenes and appearances tables. Use the str and summary functions on the different tables to understand their structures and relationships. 
+```
+
+```{r, solution = TRUE}
+summary(characters)
+str(characters)
+summary(episodes)
+str(episodes)
+summary(scenes) 
+str(scenes)
+summary(appearances)
+str(appearances)
+```
+
+# Exercise 2 : some R base commands
+
+```{block, box.title = "2.1", box.body = list(fill = "white"), box.icon = "fa-star"}
+Use the scenes table to calculate the number of dead characters in the whole series. 
+```
+
+```{r, solution = TRUE}
+sum(scenes$nbdeath)
+```
+
+```{block, box.title = "2.2", box.body = list(fill = "white"), box.icon = "fa-star"}
+Use the scenes table to calculate the number of dead characters in the first season. 
+```
+
+```{r, solution = TRUE}
+sum(scenes$nbdeath[(scenes$episodeId <= sum(episodes$seasonNum == 1))])
+```
+
+```{r, solution = TRUE}
+sum(scenes$nbdeath[scenes$episodeId %in% episodes$episodeId[which(episodes$seasonNum == 1)]])
+```
+
+```{block, box.title = "2.3", box.body = list(fill = "white"), box.icon = "fa-star"}
+Use the characters table to find the 5 biggest murderers of the series. 
+```
+
+```{r, solution = TRUE}
+sort(table(characters$killedBy),TRUE)[1:5]
+```
+
+```{block, box.title = "2.4", box.body = list(fill = "white"), box.icon = "fa-star"}
+Find the length of the longest scene and the id of the episode. 
+```
+
+```{r, solution = TRUE}
+scenes[which.max(scenes$duration),]
+```
+
+# Exercise 3 : dplyr
+
+```{block, box.title = "3.1", box.body = list(fill = "white"), box.icon = "fa-star"}
+Find the longest scene duration and episode id using dplyr this time.
+```
+
+```{r, solution = TRUE}
+scenes %>%
+  arrange(desc(duration)) %>%
+  head(1) %>%
+  select(duration, episodeId)
+
+```
+```{block, box.title = "3.2", box.body = list(fill = "white"), box.icon = "fa-star"}
+Find the characters in the longest scene.
+```
+
+```{r, solution = TRUE}
+scenes %>%
+  arrange(desc(duration)) %>%
+  head(1) %>%
+  left_join(appearances, by=c("sceneId")) %>%
+  select(name)
+
+```
+
+```{block, box.title = "3.3", box.body = list(fill = "white"), box.icon = "fa-star"}
+Find the most visited place.
+```
+
+```{r, solution = TRUE}
+scenes %>%
+  group_by(location) %>%
+  summarise(nbscenes = n()) %>%
+  arrange(desc(nbscenes)) %>%
+  head(1) %>%
+  select(location)
+
+```
+
+```{block, box.title = "3.4", box.body = list(fill = "white"), box.icon = "fa-star"}
+How many scenes take place in Port Real ?
+```
+
+```{r, solution = TRUE}
+scenes %>%
+  filter(location == "Port Real") %>%
+  group_by(location) %>%
+  summarise(nbscenes = n())
+
+```
+
+```{block, box.title = "3.5", box.body = list(fill = "white"), box.icon = "fa-star"}
+Find the precise location (subLocation) where the most people die?
+```
+
+```{r, solution = TRUE}
+scenes %>%
+  group_by(subLocation) %>%
+  summarise(nd = sum(nbdeath)) %>%
+  arrange(desc(nd))
+
+```
+
+```{block, box.title = "3.6", box.body = list(fill = "white"), box.icon = "fa-star"}
+Find the episode where Jon Snow has the longuest screen time.
+```
+
+```{r, solution = TRUE}
+appearances %>%
+  filter(name == "Jon Snow") %>%
+  left_join(scenes) %>%
+  left_join(episodes) %>%
+  group_by(name, episodeId, episodeTitle) %>%
+  summarise(screenTime = sum(duration)) %>%
+  arrange(desc(screenTime)) %>%
+  head(1)
+
+```
+
+```{block, box.title = "3.7", box.body = list(fill = "white"), box.icon = "fa-star"}
+how many characters do have more than 30 minutes of screen time ?
+```
+
+```{r, solution = TRUE}
+appearances %>%
+  left_join(scenes) %>%
+  group_by(name) %>%
+  summarise(screenTime = sum(duration)) %>%
+  filter(screenTime>30*60) %>%
+  nrow()
+
+```
+
+```{block, box.title = "3.8", box.body = list(fill = "white"), box.icon = "fa-star"}
+Which characters do have the more scenes together.
+```
+
+```{r, solution = TRUE}
+appearances %>%
+  left_join(appearances, by=c("sceneId"="sceneId")) %>%
+  filter(name.x != name.y) %>%
+  group_by(name.x,name.y) %>%
+  summarise(nbscenes = n()) %>%
+  arrange(desc(nbscenes))
+
+```
+
+```{block, box.title = "3.9", box.body = list(fill = "white"), box.icon = "fa-star"}
+Which two characters spend the most time together?
+```
+
+```{r, solution = TRUE}
+appearances %>%
+  left_join(appearances, by=c("sceneId"="sceneId")) %>%
+  filter(name.x != name.y) %>%
+  left_join(scenes %>% select(sceneId,duration)) %>%
+  group_by(name.x,name.y) %>%
+  summarise(screenTime = sum(duration)) %>%
+  arrange(desc(screenTime))
+
+```
+
+```{block, box.title = "3.10", box.body = list(fill = "white"), box.icon = "fa-star"}
+Build a data.frame with one line per character containing a name column and a column for each place with the duration of presence of each character. If a character has never been in a place the value is equal to 0.
+```
+
+```{r, solution = TRUE}
+df <- scenes %>%
+  left_join(appearances) %>%
+  group_by(name,location) %>%
+  summarise(screenTime = sum(duration)) %>%
+  pivot_wider(values_from=screenTime,names_from=location,values_fill=c("duration"=0))
+
+df
+
+```
+
+```{block, box.title = "3.11", box.body = list(fill = "white"), box.icon = "fa-star"}
+Construct from the previous data.frame a matrix containing only the numerical variables. Filter it to keep only the lines whose sum is higher than 3600. Normalize it so that the sums in lines are equal to 1. Give the name of each character kept to the corresponding line in the matrix with the function rownames.
+```
+
+```{r, solution = TRUE}
+X <- as.matrix(df[,-1])
+Xs <- X[rowSums(X)>3600,]
+Xns <- Xs/rowSums(Xs)
+rownames(Xns) <- df$name[rowSums(X)>3600]
+
+Xns
+```
+
+```{block, box.title = "3.12", box.body = list(fill = "white"), box.icon = "fa-star"}
+Using the function `dist calculate the manhatan distance between each line of the previous matrix. Then perform a hierarchical clustering with this distance matrix and display the result. You should get a figure similar to the following one :
+```
+
+```{r, solution = TRUE}
+hc <- hclust(dist(Xns,method="manhattan"))
+X11()
+plot(hc, main = "Clustering of the main characters (geographical profiles)", sub = "@roortheroor, 2020", xlab = "")
+capture <- tk_messageBox(message = "close plot", detail = "")
+```

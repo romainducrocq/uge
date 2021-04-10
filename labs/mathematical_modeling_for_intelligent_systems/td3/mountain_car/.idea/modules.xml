@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../mountaincar/olcar2015_ex2_code/Mountain Car/Design_functions/.idea/Design_functions.iml" filepath="$PROJECT_DIR$/../mountaincar/olcar2015_ex2_code/Mountain Car/Design_functions/.idea/Design_functions.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../mountaincar/olcar2015_ex2_code/Mountain Car/.idea/Mountain Car.iml" filepath="$PROJECT_DIR$/../mountaincar/olcar2015_ex2_code/Mountain Car/.idea/Mountain Car.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../project/qlearning/example1/.idea/example1.iml" filepath="$PROJECT_DIR$/../../project/qlearning/example1/.idea/example1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../example2/.idea/example2.iml" filepath="$PROJECT_DIR$/../example2/.idea/example2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../example3/.idea/example3.iml" filepath="$PROJECT_DIR$/../example3/.idea/example3.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/example4.iml" filepath="$PROJECT_DIR$/.idea/example4.iml" />
+    </modules>
+  </component>
+</project>
